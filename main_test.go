@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/binary"
+	"fmt"
 	"log"
 	"testing"
 
@@ -18,20 +18,20 @@ func Test_s7(t *testing.T) {
 	}
 	client := gos7.NewClient(handler)
 
-	buf := make([]byte, 2)
-	buf[0] = 24
-	buf[1] = 34
-	println("SEND ", binary.BigEndian.Uint16(buf))
+	// buf := make([]byte, 2)
+	// buf[0] = 24
+	// buf[1] = 34
+	// println("SEND ", binary.BigEndian.Uint16(buf))
 
-	if err := client.AGWriteDB(13, 4, 2, buf); err != nil {
+	// if err := client.AGWriteDB(13, 4, 2, buf); err != nil {
+	// 	t.Error(err)
+	// }
+	buf2 := make([]byte, 10)
+	// println("DELETE  BUFFER ", binary.BigEndian.Uint16(buf))
+
+	if err := client.AGReadDB(10, 0, 10, buf2); err != nil {
 		t.Error(err)
 	}
-	buf = make([]byte, 2)
-	println("DELETE  BUFFER ", binary.BigEndian.Uint16(buf))
-
-	if err := client.AGReadDB(13, 4, 2, buf); err != nil {
-		t.Error(err)
-	}
-	println("READ ", binary.BigEndian.Uint16(buf))
+	fmt.Println("client.AGReadDB =>", buf2)
 
 }
