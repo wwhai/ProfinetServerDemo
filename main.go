@@ -13,6 +13,9 @@ import (
 	profinet "github.com/Kowiste/ProfinetServer"
 )
 
+//
+// Db是10个 short ，实际上是 20个字节
+//
 var db = []uint16{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 var rack, slot = uint16(0), uint16(1)
 
@@ -21,9 +24,7 @@ func main() {
 	channel := make(chan os.Signal, 1)
 	signal.Notify(channel, syscall.SIGINT, syscall.SIGABRT)
 	server := profinet.NewServer()
-	server.SetDB(10, db)
-
-	if err := server.Listen("0.0.0.0:1503", rack, slot); err != nil {
+	if err := server.Listen("0.0.0.0:1800", rack, slot); err != nil {
 		log.Println(err)
 		return
 	}
@@ -52,6 +53,7 @@ func main() {
 			for i := range db {
 				fmt.Printf(" %v ", db[i])
 			}
+			server.SetDB(10, db)
 			fmt.Printf("\r")
 		}
 
